@@ -1,0 +1,37 @@
+name: Deploy
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_USER_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+on:
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    working-directory: ./client
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install client dependencies
+        run: npm install
+
+      - name: Build client
+        run: npm run build
+
+      - name: Deploy client to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./
+        run: npx vercel --prod --token $VERCEL_TOKEN
