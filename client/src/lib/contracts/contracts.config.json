@@ -1,0 +1,71 @@
+{
+  "31337": {
+    "network": {
+      "name": "Hardhat",
+      "explorerUrl": ""
+    },
+    "exchange": {
+      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+    },
+    "tokens": {
+      "baseToken": {
+        "symbol": "dEx",
+        "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+      },
+      "quoteToken_1": {
+        "symbol": "mEth",
+        "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+      },
+      "quoteToken_2": {
+        "symbol": "mLink",
+        "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+      }
+    }
+  },
+  "31338": {
+    "network": {
+      "name": "Foundry",
+      "explorerUrl": ""
+    },
+    "exchange": {
+      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+    },
+    "tokens": {
+      "baseToken": {
+        "symbol": "dEx",
+        "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+      },
+      "quoteToken_1": {
+        "symbol": "mEth",
+        "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+      },
+      "quoteToken_2": {
+        "symbol": "mLink",
+        "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+      }
+    }
+  },
+  "11155111": {
+    "network": {
+      "name": "Ethereum Sepolia",
+      "explorerUrl": "https://sepolia.etherscan.io"
+    },
+    "exchange": {
+      "address": "0xFcD284700E28D5D2a5705419bcDb72f13C825365"
+    },
+    "tokens": {
+      "baseToken": {
+        "symbol": "dEx",
+        "address": "0xc4d3cC58CE3e8F440340Dd41069f920410870131"
+      },
+      "quoteToken_1": {
+        "symbol": "mEth",
+        "address": "0x4481684624Ef52259f5526F314c20bFC384c7d4F"
+      },
+      "quoteToken_2": {
+        "symbol": "mLink",
+        "address": "0xF9D6456a262E957306d69C02BFa1945B488B6557"
+      }
+    }
+  }
+}

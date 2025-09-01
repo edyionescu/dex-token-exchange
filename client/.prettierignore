@@ -1,0 +1,23 @@
+# Default exclusions
+**/.git
+**/.svn
+**/node_modules
+
+# Build/generated files
+build/
+coverage/
+dist/
+*.min.js
+*.map
+*.snap
+
+# Configuration files
+package.json
+package-lock.json
+
+# Test files
+**/test*/**/*.html
+**/test*/**/*.xhtml
+
+# Override: Include specific files
+!src/**/*.js  # Format all JS files in src/

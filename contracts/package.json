@@ -1,0 +1,53 @@
+{
+  "name": "dex-token-exchange-contracts",
+  "version": "1.0.0",
+  "type": "module",
+  "author": "Edy Ionescu <errorsmith@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "keywords": [
+    "openzeppelin",
+    "hardhat",
+    "ethereum",
+    "solidity",
+    "smart-contracts",
+    "erc20",
+    "exchange",
+    "metamask",
+    "coinbase",
+    "rabby"
+  ],
+  "scripts": {
+    "node": "hardhat node",
+    "deploy": "cross-env HARDHAT_NETWORK=localhost hardhat ignition deploy ignition/modules/deploy.js",
+    "seed": "cross-env HARDHAT_NETWORK=localhost node ./scripts/seed.js",
+    "deploy-seed": "npm run deploy && npm run seed",
+    "compile": "hardhat compile",
+    "console": "hardhat console",
+    "node-foundry": "anvil --port 8546 --chain-id 31338",
+    "deploy-foundry": "cross-env HARDHAT_NETWORK=localhost_foundry HARDHAT_IGNITION_CONFIRM_DEPLOYMENT=false HARDHAT_IGNITION_CONFIRM_RESET=false hardhat ignition deploy ignition/modules/deploy.js --reset",
+    "seed-foundry": "cross-env HARDHAT_NETWORK=localhost_foundry node ./scripts/seed.js",
+    "deploy-seed-foundry": "npm run deploy-foundry && npm run seed-foundry",
+    "deploy-sepolia": "cross-env HARDHAT_NETWORK=sepolia hardhat ignition deploy ignition/modules/deploy.js --deployment-id dex-sepolia",
+    "verify-sepolia": "hardhat ignition verify dex-sepolia",
+    "seed-sepolia": "cross-env HARDHAT_NETWORK=sepolia node ./scripts/seed.js",
+    "clean": "hardhat clean",
+    "test": "hardhat test",
+    "test-with-gas-report": "cross-env REPORT_GAS=true hardhat test",
+    "vars": "hardhat vars list",
+    "networks": "hardhat verify --list-networks",
+    "export-abi": "hardhat export-abi",
+    "clear-abi": "hardhat clear-abi"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "cross-env": "^10.0.0",
+    "hardhat": "^2.26.3",
+    "hardhat-abi-exporter": "^2.11.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0"
+  }
+}
