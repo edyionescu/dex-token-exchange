@@ -1,5 +1,8 @@
 # dEx Token Exchange
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/edyionescu/dex-token-exchange)
+![GitHub License](https://img.shields.io/github/license/edyionescu/dex-token-exchange)
+
 ## Overview
 
 This project is a decentralized application (dApp) that implements a token exchange. It allows users to trade different ERC20 tokens in a peer-to-peer manner. The application consists of a smart contract layer and a client-side user interface.
