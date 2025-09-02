@@ -19,12 +19,8 @@ The typical workflow for a user is as follows:
 
 <br />
 <img src="assets/dex_foundy.png" alt="dEx Token Exchange - Foundry"/>
-
-<details>
-    <summary>Details</summary>
-    <img src="assets/dex_hardhat.png" alt="dEx Token Exchange - Hardhat"/>
-    <img src="assets/dex_wallet_tokens.png" alt="dEx Token Exchange - Get Tokens - Daily Limit Reached"/>
-</details>
+<img src="assets/dex_hardhat.png" alt="dEx Token Exchange - Hardhat"/>
+<img src="assets/dex_wallet_tokens.png" alt="dEx Token Exchange - Get Tokens - Daily Limit Reached"/>
 
 ## Core Components
 
