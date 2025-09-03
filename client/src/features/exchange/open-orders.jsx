@@ -206,7 +206,7 @@ export function OpenOrders() {
   return (
     <div
       className={cn(
-        'relative col-start-1 col-end-13 m-[0.13em] h-[36vh] min-h-[470px] bg-sidebar-accent px-[1.75em] py-[0.75em]',
+        'relative col-start-1 col-end-13 m-[0.13em] mb-0 min-h-[470px] bg-sidebar-accent px-[1.75em] py-[0.75em] lg:h-[36.3vh]',
         {
           'bg-sidebar-accent/30': !userAccount,
         },

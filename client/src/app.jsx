@@ -21,7 +21,7 @@ function App() {
     <div className="mx-auto max-w-[1920px]">
       <Nav />
       <div className="grid min-h-[90vh] grid-cols-12">
-        <main className="order-1 col-start-1 col-end-13 grid grid-cols-12 p-[0.13em] xl:order-0 xl:col-end-9 xl:pt-0 2xl:col-end-10">
+        <main className="order-1 col-start-1 col-end-13 grid grid-cols-12 p-[0.13em] pb-0 xl:order-0 xl:col-end-9 xl:pt-0 2xl:col-end-10">
           <PriceChart />
           <MyHistory />
           <TradeBook />
