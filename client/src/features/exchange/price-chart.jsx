@@ -40,7 +40,7 @@ export function PriceChart() {
   return (
     <div
       className={cn(
-        'relative col-start-1 col-end-13 m-[0.13em] h-[31vh] bg-sidebar-accent px-[1.75em] py-[0.75em]',
+        'relative col-start-1 col-end-13 m-[0.13em] h-[31.12vh] min-h-[400px] bg-sidebar-accent px-[1.75em] py-[0.75em]',
         {
           'bg-sidebar-accent/30': !userAccount,
         },

@@ -95,7 +95,7 @@ export function MyHistory() {
   return (
     <div
       className={cn(
-        'relative col-start-1 col-end-13 m-[0.13em] h-[283px] bg-sidebar-accent px-[1.75em] py-[0.75em] md:col-start-1 md:col-end-7',
+        'relative col-start-1 col-end-13 m-[0.13em] h-[21.77vh] min-h-[280px] bg-sidebar-accent px-[1.75em] py-[0.75em] md:col-start-1 md:col-end-7',
         {
           'bg-sidebar-accent/30': !userAccount,
         },
@@ -138,11 +138,11 @@ export function MyHistory() {
       {!hasHistory ? (
         <Fallback>No {historyType}.</Fallback>
       ) : (
-        <ScrollArea ref={scrollAreaRef} className="h-[200px] w-[101%] pr-4">
+        <ScrollArea ref={scrollAreaRef} className="mt-5 h-[70%] w-[101%] pr-4">
           <Table>
             <TableHeader className="sticky top-0 bg-muted">
-              <TableRow className="hover:bg-muted-foreground/7">
-                <TableHead className="h-12.5 w-1/5 text-center text-muted-foreground">
+              <TableRow>
+                <TableHead className="w-1/5 text-center text-muted-foreground">
                   Type
                 </TableHead>
                 <TableHead className="w-1/5 text-right text-muted-foreground">

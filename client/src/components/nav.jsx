@@ -5,7 +5,7 @@ import { Network } from './network';
 
 export function Nav() {
   return (
-    <header className="relative grid h-[10vh] grid-cols-12">
+    <header className="relative grid h-[10vh] min-h-[80px] grid-cols-12">
       <div className="relative -top-[10px] col-start-1 col-end-13 row-[2] ml-[15px] flex items-center justify-start lg:[position:initial] lg:[top:initial] lg:col-end-5 lg:row-[1] xl:ml-[25px] 2xl:col-end-4">
         <Network />
       </div>

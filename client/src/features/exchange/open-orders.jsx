@@ -53,10 +53,10 @@ function OrdersByType({ orders, type = 'buying' }) {
       {!hasOrders ? (
         <Fallback>No {type} orders.</Fallback>
       ) : (
-        <ScrollArea className="h-[29vh] pr-4">
+        <ScrollArea className="h-[29vh] min-h-[375px] pr-4">
           <Table>
             <TableHeader className="sticky top-0 z-1 bg-muted">
-              <TableRow className="hover:bg-muted-foreground/7">
+              <TableRow>
                 <TableHead className="w-1/5 text-center text-muted-foreground">
                   Type
                 </TableHead>
@@ -206,7 +206,7 @@ export function OpenOrders() {
   return (
     <div
       className={cn(
-        'relative col-start-1 col-end-13 m-[0.13em] bg-sidebar-accent px-[1.75em] py-[0.75em] lg:h-[36vh]',
+        'relative col-start-1 col-end-13 m-[0.13em] h-[36vh] min-h-[470px] bg-sidebar-accent px-[1.75em] py-[0.75em]',
         {
           'bg-sidebar-accent/30': !userAccount,
         },
