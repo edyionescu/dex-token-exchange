@@ -49,9 +49,9 @@ contract Exchange is Ownable {
         uint64 createdAt; // packed together with 'tokenGive' in slot 5
     }
 
-    // State variables
-    address private s_feeAccount;
-    uint256 private s_feePercentage;
+    // --- State variables ---
+    address private immutable s_feeAccount;
+    uint256 private immutable s_feePercentage;
     uint256 private s_orderCount;
 
     mapping(uint256 orderId => Order order) private s_orders;
