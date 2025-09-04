@@ -10,21 +10,22 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 /// @notice ERC20 token contract with a faucet feature.
 /// @dev The contract is initially owned by the deployer and has the ability to mint and distribute tokens.
 /// @custom:security-contact errorsmith@gmail.com
+// aderyn-ignore-next-line(centralization-risk)
 contract Token is ERC20, Ownable {
-    // Errors
+    // --- Errors ---
     error Token__AmountNotGreaterThanZero(uint256 amount);
     error Token__DailyLimitExceeded(uint256 amount, uint256 dailyLimit);
 
-    // Constants
+    // --- Constants ---
     uint256 private constant ONE_DAY = 1 days;
     uint256 private immutable UNITS = 10 ** decimals();
     uint256 private immutable i_faucetDailyLimit;
 
-    // State variables
+    // --- State variables ---
     mapping(address => uint256) private s_lastDistributionTime;
     mapping(address => uint256) private s_tokensDistributedToday;
 
-    // Events
+    // --- Events ---
     event TokensDistributed(
         address indexed user,
         uint256 amount,
@@ -48,6 +49,7 @@ contract Token is ERC20, Ownable {
     /// @notice Mint tokens to a user
     /// @param to The address to mint tokens to
     /// @param amount The amount of tokens to mint
+    // aderyn-ignore-next-line(centralization-risk)
     function mint(address to, uint256 amount) external onlyOwner {
         _mint(to, amount * UNITS);
     }
@@ -131,9 +133,7 @@ contract Token is ERC20, Ownable {
         return lastTime + ONE_DAY;
     }
 
-    /**
-     * Getter functions
-     */
+    // --- Getter functions ---
 
     /// @notice Get the faucet daily limit
     function getFaucetDailyLimit() external view returns (uint256) {

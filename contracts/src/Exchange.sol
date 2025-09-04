@@ -11,10 +11,11 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 /// @notice Decentralized exchange for ERC20 tokens
 /// @dev The contract is initially owned by the deployer and manages balances, orders, and fees.
 /// @custom:security-contact errorsmith@gmail.com
+// aderyn-ignore-next-line(centralization-risk)
 contract Exchange is Ownable {
     using SafeERC20 for IERC20;
 
-    // Errors
+    // --- Errors ---
     error Exchange__InsufficientBalanceToWithdraw(
         uint256 balance,
         uint256 amount
@@ -33,7 +34,7 @@ contract Exchange is Ownable {
         uint256 amount
     );
 
-    // Type declarations
+    // --- Type declarations ---
     enum TransferType {
         DEPOSIT,
         WITHDRAW
@@ -60,7 +61,7 @@ contract Exchange is Ownable {
     mapping(address token => mapping(address user => uint256 amount))
         private s_balanceOf;
 
-    // Events
+    // --- Events ---
     event Deposit(
         address indexed token,
         address indexed user,
@@ -319,25 +320,33 @@ contract Exchange is Ownable {
         );
     }
 
-    /**
-     * Getter functions
-     */
+    // --- Getter functions ---
+
+    /// @notice Get the number of orders
     function getOrderCount() external view returns (uint256) {
         return s_orderCount;
     }
 
+    /// @notice Get an order
+    /// @param id The ID of the order
     function getOrder(uint256 id) external view returns (Order memory) {
         return s_orders[id];
     }
 
+    /// @notice Check if an order is filled
+    /// @param id The ID of the order
     function getOrderFilled(uint256 id) external view returns (bool) {
         return s_ordersFilled[id];
     }
 
+    /// @notice Check if an order is cancelled
+    /// @param id The ID of the order
     function getOrderCancelled(uint256 id) external view returns (bool) {
         return s_ordersCancelled[id];
     }
 
+    /// @notice Check if an order is open
+    /// @param id The ID of the order
     function getOrderOpen(uint256 id) external view returns (bool) {
         return
             s_orders[id].id > 0 &&
@@ -345,14 +354,19 @@ contract Exchange is Ownable {
             !s_ordersCancelled[id];
     }
 
+    /// @notice Get the fee account
     function getFeeAccount() external view returns (address) {
         return s_feeAccount;
     }
 
+    /// @notice Get the fee percentage
     function getFeePercentage() external view returns (uint256) {
         return s_feePercentage;
     }
 
+    /// @notice Get the balance of a user for a token
+    /// @param token The address of the token
+    /// @param user The address of the user
     function balanceOf(
         address token,
         address user
