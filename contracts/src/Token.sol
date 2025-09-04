@@ -14,7 +14,6 @@ contract Token is ERC20, Ownable {
     // Errors
     error Token__AmountNotGreaterThanZero(uint256 amount);
     error Token__DailyLimitExceeded(uint256 amount, uint256 dailyLimit);
-    error Token__InitialMintAlreadyCompleted(uint256 amount);
 
     // Constants
     uint256 private constant ONE_DAY = 1 days;
