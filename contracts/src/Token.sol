@@ -43,8 +43,6 @@ contract Token is ERC20, Ownable {
         i_faucetDailyLimit = faucetDailyLimit * UNITS;
     }
 
-    receive() external payable {}
-
     fallback() external {}
 
     /// @notice Mint tokens to a user

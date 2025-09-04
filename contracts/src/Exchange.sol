@@ -111,8 +111,6 @@ contract Exchange is Ownable {
         s_feePercentage = feePercentage;
     }
 
-    receive() external payable {}
-
     fallback() external {}
 
     /// @notice Deposit tokens into the exchange
