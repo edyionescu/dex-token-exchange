@@ -1,13 +1,19 @@
 // SPDX-License-Identifier: MIT
+// Compatible with OpenZeppelin Contracts ^5.4.0
 pragma solidity 0.8.28;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
+/// @title Mock Token
+/// @author Edy Ionescu
+/// @notice Mock of 'Token' contract for testing purposes.
 contract MockToken is ERC20, Ownable {
-    bool public shouldFailTransfer;
-
+    // --- Constants ---
     uint256 private immutable i_faucetDailyLimit;
+
+    // --- State variables ---
+    bool public s_shouldFailTransfer;
 
     constructor(
         string memory name,
@@ -22,14 +28,14 @@ contract MockToken is ERC20, Ownable {
     }
 
     function setShouldFailTransfer(bool _shouldFail) external {
-        shouldFailTransfer = _shouldFail;
+        s_shouldFailTransfer = _shouldFail;
     }
 
     function transfer(
         address to,
         uint256 amount
     ) public override returns (bool) {
-        if (shouldFailTransfer) {
+        if (s_shouldFailTransfer) {
             return false;
         }
         return super.transfer(to, amount);
@@ -40,7 +46,7 @@ contract MockToken is ERC20, Ownable {
         address to,
         uint256 amount
     ) public override returns (bool) {
-        if (shouldFailTransfer) {
+        if (s_shouldFailTransfer) {
             return false;
         }
         return super.transferFrom(from, to, amount);
