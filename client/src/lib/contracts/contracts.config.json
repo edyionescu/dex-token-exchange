@@ -51,20 +51,20 @@
       "explorerUrl": "https://sepolia.etherscan.io"
     },
     "exchange": {
-      "address": "0xFcD284700E28D5D2a5705419bcDb72f13C825365"
+      "address": "0x00f1CfC9a5492646e4a5D7fbA0e28cA9FB7be95c"
     },
     "tokens": {
       "baseToken": {
         "symbol": "dEx",
-        "address": "0xc4d3cC58CE3e8F440340Dd41069f920410870131"
+        "address": "0x4fBb759E172D3794B1aD4F89a303df9AFcDD62E3"
       },
       "quoteToken_1": {
         "symbol": "mEth",
-        "address": "0x4481684624Ef52259f5526F314c20bFC384c7d4F"
+        "address": "0xc52bA7DDcd89A10b86B806a5D0119b44f8D85944"
       },
       "quoteToken_2": {
         "symbol": "mLink",
-        "address": "0xF9D6456a262E957306d69C02BFa1945B488B6557"
+        "address": "0x0447B40A3837A360cf6b2EF5367D702E19b0a672"
       }
     }
   }
