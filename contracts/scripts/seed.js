@@ -6,6 +6,7 @@ import {
   getRandomFloat,
   getRandomInt,
   next30MinTimestamp,
+  now,
   withRetries,
 } from '../lib/helpers.js';
 
@@ -261,7 +262,7 @@ async function main() {
     );
 
     if (!tx.errorMessage) {
-      await delay(60 * 3); // Wait 3 minutes before filling the order
+      await delay(60 * 1); // Wait 1 minute before filling the order
 
       // Taker fills order
       const taker = maker === client1 ? client2 : client1;
@@ -279,7 +280,8 @@ async function main() {
 
     if (index !== ordersToFill.length - 1 && (index + 1) % 4 === 0) {
       console.log(`
-    > Start filling the next 4 orders at the next 30 minutes mark`);
+    > Start filling the next 4 orders at the next 30 minutes mark - ${now()}
+    `);
       await goToNext30MinMark();
     }
   }

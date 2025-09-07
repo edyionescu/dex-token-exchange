@@ -5,18 +5,54 @@ const { ethers } = hre;
 
 export async function withRetries(fn) {
   const maxRetries = 3;
-  for (let i = 0; i < maxRetries; i++) {
+  const timeoutMs = 5 * 60 * 1000; // 5 minutes timeout
+
+  function mockTx(errorMessage) {
+    // Return a mock transaction object
+    return { wait: async () => {}, blockNumber: 'SKIPPED', errorMessage };
+  }
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      if (i > 0) {
-        await sleep(5); // Wait 5 seconds before retrying
+      const mempoolTimeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('MEMPOOL_TIMEOUT')), timeoutMs);
+      });
+
+      if (attempt > 1) {
+        logtoConsole && console.log(`${now()} - Waiting 5 seconds before retrying...`);
+        await sleep(5); // Wait 5 seconds before retrying after a failed attempt
       }
-      const tx = await fn();
-      const receipt = await tx.wait();
-      return { ...receipt, errorMessage: '' };
+
+      // Don't wait more than 5 minutes (timeoutMs) for the transaction to be sent
+      const tx = await Promise.race([fn(), mempoolTimeoutPromise]);
+      logtoConsole &&
+        console.log(`${now()} - Transaction sent to the mempool, waiting to be included in the chain...`);
+
+      // If there's a wait method, check it with a fresh timeout
+      if (tx && typeof tx.wait === 'function') {
+        const blockchainTimeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('BLOCKCHAIN_TIMEOUT')), timeoutMs);
+        });
+
+        const receipt = await Promise.race([tx.wait(), blockchainTimeoutPromise]);
+        logtoConsole && console.log(`${now()} - Transaction mined`);
+
+        return { ...receipt, errorMessage: '' };
+      }
+
+      return { ...result, errorMessage: '' };
     } catch (error) {
-      if (i === maxRetries - 1) {
-        const errorMessage = `Transaction failed on attempt ${maxRetries} with ${error.message}`;
-        return { wait: async () => {}, blockNumber: 'SKIPPED', errorMessage }; // Return a mock transaction object
+      // If it's a timeout, don't retry - just exit and move on
+      if (error.message === 'MEMPOOL_TIMEOUT' || error.message === 'BLOCKCHAIN_TIMEOUT') {
+        const errorMessage = `${error.message}: Operation timed out after ${timeoutMs}ms on attempt ${attempt}`;
+        return mockTx(errorMessage);
+      }
+
+      logtoConsole && console.log(`${now()} - Attempt ${attempt} failed:`, error.message);
+
+      if (attempt === maxRetries) {
+        const errorMessage = `Transaction failed on attempt ${attempt} with ${error.message}`;
+        return mockTx(errorMessage);
       }
     }
   }
@@ -60,6 +96,17 @@ export function next30MinTimestamp(timestamp) {
   );
 
   return Math.floor(next30Min.getTime() / 1000);
+}
+
+export function now() {
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    dateStyle: 'short',
+    timeStyle: 'medium',
+    hour12: false,
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // current timezone
+  });
+
+  return formatter.format(new Date());
 }
 
 export function getRandomInt(min, max) {
