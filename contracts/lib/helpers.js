@@ -3,7 +3,21 @@ import { sleep } from '../../lib/helpers.js';
 
 const { ethers } = hre;
 
-export async function withRetries(fn) {
+export async function buildTxParams(owner) {
+  try {
+    const feeData = await owner.provider.getFeeData();
+    const txParams = {
+      maxFeePerGas: (feeData.maxFeePerGas * 150n) / 100n, // 50% higher
+      maxPriorityFeePerGas: (feeData.maxPriorityFeePerGas * 150n) / 100n, // 50% higher
+    };
+
+    return txParams;
+  } catch (error) {
+    return {};
+  }
+}
+
+export async function withRetries(fn, logtoConsole = false) {
   const maxRetries = 3;
   const timeoutMs = 5 * 60 * 1000; // 5 minutes timeout
 

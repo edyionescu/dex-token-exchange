@@ -3,6 +3,7 @@ import hre from 'hardhat';
 import { formatAmount, sleep, toUnits } from '../../lib/helpers.js';
 import {
   blockTimestamp,
+  buildTxParams,
   getRandomFloat,
   getRandomInt,
   next30MinTimestamp,
@@ -81,9 +82,11 @@ async function main() {
     console.log(`
     > Client${idx + 1}:`);
 
-    let tx;
+    let tx, txParams;
+
+    txParams = await buildTxParams(owner);
     tx = await withRetries(() =>
-      dEx.connect(owner).transfer(client.address, toUnits(distribute_dEx, dExDecimals, ethers))
+      dEx.connect(owner).transfer(client.address, toUnits(distribute_dEx, dExDecimals, ethers), txParams)
     );
     console.log(
       `
@@ -91,8 +94,9 @@ async function main() {
       tx.errorMessage
     );
 
+    txParams = await buildTxParams(owner);
     tx = await withRetries(() =>
-      mEth.connect(owner).transfer(client.address, toUnits(distribute_mEth, mEthDecimals, ethers))
+      mEth.connect(owner).transfer(client.address, toUnits(distribute_mEth, mEthDecimals, ethers), txParams)
     );
     console.log(
       `
@@ -100,8 +104,11 @@ async function main() {
       tx.errorMessage
     );
 
+    txParams = await buildTxParams(owner);
     tx = await withRetries(() =>
-      mLink.connect(owner).transfer(client.address, toUnits(distribute_mLink, mLinkDecimals, ethers))
+      mLink
+        .connect(owner)
+        .transfer(client.address, toUnits(distribute_mLink, mLinkDecimals, ethers), txParams)
     );
     console.log(
       `
@@ -126,43 +133,54 @@ async function main() {
     console.log(`
     > Client${idx + 1}:`);
 
-    let tx;
-    tx = await withRetries(() => dEx.connect(client).approve(exchange.target, deposit_dEx_units));
+    let tx, txParams;
+
+    txParams = await buildTxParams(owner);
+    tx = await withRetries(() => dEx.connect(client).approve(exchange.target, deposit_dEx_units, txParams));
     console.log(
       `
       Approve ${deposit_dEx} dEx - ${await blockTimestamp(tx.blockNumber)}`,
       tx.errorMessage
     );
 
-    tx = await withRetries(() => exchange.connect(client).deposit(dEx.target, deposit_dEx_units));
+    txParams = await buildTxParams(owner);
+    tx = await withRetries(() => exchange.connect(client).deposit(dEx.target, deposit_dEx_units, txParams));
     console.log(
       `
       Deposit ${deposit_dEx} dEx - ${await blockTimestamp(tx.blockNumber)}`,
       tx.errorMessage
     );
 
-    tx = await withRetries(() => mEth.connect(client).approve(exchange.target, deposit_mEth_units));
+    txParams = await buildTxParams(owner);
+    tx = await withRetries(() => mEth.connect(client).approve(exchange.target, deposit_mEth_units, txParams));
     console.log(
       `
       Approve ${deposit_mEth} mEth - ${await blockTimestamp(tx.blockNumber)}`,
       tx.errorMessage
     );
 
-    tx = await withRetries(() => exchange.connect(client).deposit(mEth.target, deposit_mEth_units));
+    txParams = await buildTxParams(owner);
+    tx = await withRetries(() => exchange.connect(client).deposit(mEth.target, deposit_mEth_units, txParams));
     console.log(
       `
       Deposit ${deposit_mEth} mEth - ${await blockTimestamp(tx.blockNumber)}`,
       tx.errorMessage
     );
 
-    tx = await withRetries(() => mLink.connect(client).approve(exchange.target, deposit_mLink_units));
+    txParams = await buildTxParams(owner);
+    tx = await withRetries(() =>
+      mLink.connect(client).approve(exchange.target, deposit_mLink_units, txParams)
+    );
     console.log(
       `
       Approve ${deposit_mLink} mLink - ${await blockTimestamp(tx.blockNumber)}`,
       tx.errorMessage
     );
 
-    tx = await withRetries(() => exchange.connect(client).deposit(mLink.target, deposit_mLink_units));
+    txParams = await buildTxParams(owner);
+    tx = await withRetries(() =>
+      exchange.connect(client).deposit(mLink.target, deposit_mLink_units, txParams)
+    );
     console.log(
       `
       Deposit ${deposit_mLink} mLink - ${await blockTimestamp(tx.blockNumber)}`,
@@ -174,10 +192,17 @@ async function main() {
     ========================= CANCEL ORDER ========================`);
 
   // Client1 makes an order and then cancels it
+  let txParams = await buildTxParams(owner);
   let tx = await withRetries(() =>
     exchange
       .connect(client1)
-      .makeOrder(mEth.target, toUnits(100, mEthDecimals, ethers), dEx.target, toUnits(5, dExDecimals, ethers))
+      .makeOrder(
+        mEth.target,
+        toUnits(100, mEthDecimals, ethers),
+        dEx.target,
+        toUnits(5, dExDecimals, ethers),
+        txParams
+      )
   );
   console.log(
     `
@@ -187,7 +212,8 @@ async function main() {
 
   if (!tx.errorMessage) {
     let orderId = await exchange.getOrderCount();
-    tx = await withRetries(() => exchange.connect(client1).cancelOrder(orderId));
+    txParams = await buildTxParams(owner);
+    tx = await withRetries(() => exchange.connect(client1).cancelOrder(orderId, txParams));
     console.log(
       `
       Client1 cancels the order - ${await blockTimestamp(tx.blockNumber)}`,
@@ -250,15 +276,19 @@ async function main() {
     const amountGive = type === 'sell' ? dExs : quoteAmount;
 
     // Maker creates order
-    let tx = await withRetries(() =>
-      exchange
-        .connect(maker)
-        .makeOrder(
-          tokenGet,
-          toUnits(amountGet, tokenGetDecimals, ethers),
-          tokenGive,
-          toUnits(amountGive, tokenGiveDecimals, ethers)
-        )
+    let txParams = await buildTxParams(owner);
+    let tx = await withRetries(
+      () =>
+        exchange
+          .connect(maker)
+          .makeOrder(
+            tokenGet,
+            toUnits(amountGet, tokenGetDecimals, ethers),
+            tokenGive,
+            toUnits(amountGive, tokenGiveDecimals, ethers),
+            txParams
+          ),
+      true
     );
 
     if (!tx.errorMessage) {
@@ -267,7 +297,8 @@ async function main() {
       // Taker fills order
       const taker = maker === client1 ? client2 : client1;
       const orderId = await exchange.getOrderCount();
-      tx = await withRetries(() => exchange.connect(taker).fillOrder(orderId));
+      txParams = await buildTxParams(owner);
+      tx = await withRetries(() => exchange.connect(taker).fillOrder(orderId, txParams), true);
 
       console.log(
         `
@@ -338,7 +369,8 @@ async function main() {
         const tokenGiveDecimals = type === 'sell' ? dExDecimals : quoteContractDecimals;
         const amountGive = type === 'sell' ? dExs : quoteAmount;
 
-        let tx;
+        let tx, txParams;
+        txParams = await buildTxParams(owner);
         tx = await withRetries(() =>
           exchange
             .connect(client)
@@ -346,7 +378,8 @@ async function main() {
               tokenGet,
               toUnits(amountGet, tokenGetDecimals, ethers),
               tokenGive,
-              toUnits(amountGive, tokenGiveDecimals, ethers)
+              toUnits(amountGive, tokenGiveDecimals, ethers),
+              txParams
             )
         );
 
