@@ -5,7 +5,7 @@
   "author": "Edy Ionescu <errorsmith@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=24.0.0"
   },
   "keywords": [
     "react",
